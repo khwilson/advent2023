@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "advent2023"
+version = "0.1.0"
+description = ""
+authors = ["Kevin H Wilson <khwilson@gmail.com>"]
+packages = [{include = "advent", from = "src"}]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+black = "^23.11.0"
+isort = "^5.12.0"
+
+[tool.poetry.scripts]
+advent = "advent.cli:cli"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
