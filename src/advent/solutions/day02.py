@@ -12,7 +12,9 @@ def _parse_file(input_file: str) -> list[list[tuple[int, str]]]:
     out = []
     with open(input_file, "rt") as inf:
         for line in inf:
-            out.append([_split_reveal(x) for x in line.strip().split(":")[1].split(";")])
+            out.append(
+                [_split_reveal(x) for x in line.strip().split(":")[1].split(";")]
+            )
     return out
 
 
