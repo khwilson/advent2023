@@ -1,35 +1,13 @@
 import string
 from collections import Counter
 
-MAP = {k: v for k, v in zip("23456789TJQKA", string.ascii_lowercase)}
-PART_2_MAP = {k: v for k, v in zip("J23456789TQKA", string.ascii_lowercase)}
+MAP = {v: k for k, v in enumerate("23456789TJQKA")}
+PART_2_MAP = {v: k for k, v in enumerate("J23456789TQKA")}
+HANDS = [(1, 1, 1, 1, 1), (1, 1, 1, 2), (1, 2, 2), (1, 1, 3), (2, 3), (1, 4), (5,)]
 
 
 def _primary_rank(hand: str) -> int:
-    vals = Counter(hand)
-    cvals = Counter(vals.values())
-    if len(vals) == 5:
-        # High card
-        return 0
-    elif len(vals) == 4:
-        # Pair
-        return 1
-    elif cvals.get(2, 0) == 2:
-        # Two pair
-        return 2
-    elif cvals.get(3, 0) == 1:
-        if cvals.get(2, 0) == 1:
-            # Full house
-            return 4
-        else:
-            # Three of a kind
-            return 3
-    elif cvals.get(4, 0) == 1:
-        # Four of a kind
-        return 5
-    else:
-        # Five of a kind
-        return 6
+    return HANDS.index(tuple(sorted(Counter(hand).values())))
 
 
 class Hand:
@@ -38,18 +16,16 @@ class Hand:
         assert len(hand) == 5
 
         the_map = PART_2_MAP if primary_rank is not None else MAP
-        self.ordered_hand = "".join(the_map[k] for k in hand)
+        self.ordered_hand = tuple(the_map[k] for k in hand)
 
         self.primary_rank = primary_rank or _primary_rank(hand)
 
     @classmethod
     def for_part2(cls, hand: str) -> "Hand":
-        # Maximizes value if all Js get set to same value
-        vals = {h for h in hand if h != "J"}
-        vals = vals or {"A"}  # Deal with the case of 5 Js
+        # Maximizes value if all Js get set to same value and the corner case of 5J
+        vals = {h for h in hand if h != "J"} or {"A"}
         my_primary_rank = max(_primary_rank(hand.replace("J", v)) for v in vals)
-        hand = Hand(hand, primary_rank=my_primary_rank)
-        return hand
+        return Hand(hand, primary_rank=my_primary_rank)
 
     def __eq__(self, other: "Hand") -> bool:
         return self.hand == other.hand
