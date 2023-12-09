@@ -1,7 +1,7 @@
-from functools import reduce
 import math
 import operator
 import re
+from functools import reduce
 
 
 def _parse_file(input_file: str) -> list[tuple[int, int]]:
@@ -34,6 +34,6 @@ def part1(input_file: str):
 
 def part2(input_file: str):
     time, distance = _parse_file2(input_file)
-    l = - (- time - math.sqrt(time ** 2 - 4 * 1 * distance)) / 2
-    r = - (- time + math.sqrt(time ** 2 - 4 * 1 * distance)) / 2
+    l = -(-time - math.sqrt(time**2 - 4 * 1 * distance)) / 2
+    r = -(-time + math.sqrt(time**2 - 4 * 1 * distance)) / 2
     print(f"Part 2: {int(l - r)}")
