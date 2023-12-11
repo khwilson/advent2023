@@ -11,27 +11,17 @@ def _parse_file(
 ) -> tuple[int, dict[int, dict[int, list[tuple[int, int]]]], int, int]:
     # Just read in the input for easy parsing
     data: dict[int, dict[int, str]] = defaultdict(lambda: defaultdict(str))
-    raw = {}
-    with open(input_file, "rt") as inf:
-        for i, line in enumerate(inf):
-            raw[i] = {j: x if x != "S" else "F" for j, x in enumerate(line.strip())}
-
     s_loc = (-1, -1)
-    num_rows = 0
-    num_cols = 0
     with open(input_file, "rt") as inf:
         for i, line in enumerate(inf):
-            num_rows += 1
-            line = line.strip()
-            num_cols = len(line)
-            for j, x in enumerate(line):
-                # Staring at my input, the S is actually a 7
-                # Could do this programatically, but why?
-                if x == "S":
-                    s_loc = (i, j)
-                    data[i][j] = "7"
-                else:
-                    data[i][j] = x
+            # Staring at my input, the S is actually a 7
+            # Could do this programatically, but why?
+            if "S" in line:
+                s_loc = (i, line.index("S"))
+            data[i].update({j: x if x != "S" else "7" for j, x in enumerate(line.strip())})
+
+    num_rows = len(data)
+    num_cols = len(data[0])
 
     graph: dict[int, dict[int, list[tuple[int, int]]]] = defaultdict(
         lambda: defaultdict(list)
@@ -53,7 +43,7 @@ def _parse_file(
                     nbd.append((i, j + 1))
             if len(nbd) == 2:
                 graph[i][j] = nbd
-    return s_loc, graph, num_rows, num_cols, raw
+    return s_loc, graph, num_rows, num_cols, data
 
 
 def _get_dists(
@@ -79,7 +69,6 @@ def part1(input_file: str):
 
 def part2(input_file: str):
     s_loc, graph, num_rows, num_cols, raw = _parse_file(input_file)
-    seen = _get_dists(s_loc, graph)
 
     # So I'm supposed to use the Jordan Curve Theorem, but it's
     # rather weird on the 2d plane. To think about it, imagine a line
@@ -87,7 +76,7 @@ def part2(input_file: str):
     # F and 7 contain a | and that L and J do not. Thus, if we
     # cross F, 7, or |, we flip the parity. Otherwise, we do not
 
-    tiles = set(seen.keys())  # Filter out junk
+    tiles = set(_get_dists(s_loc, graph))  # Filter out junk
     total = 0
 
     # new_graph is just kept for debugging purposes. Keeps only
