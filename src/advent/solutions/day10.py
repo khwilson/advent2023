@@ -18,7 +18,9 @@ def _parse_file(
             # Could do this programatically, but why?
             if "S" in line:
                 s_loc = (i, line.index("S"))
-            data[i].update({j: x if x != "S" else "7" for j, x in enumerate(line.strip())})
+            data[i].update(
+                {j: x if x != "S" else "7" for j, x in enumerate(line.strip())}
+            )
 
     num_rows = len(data)
     num_cols = len(data[0])

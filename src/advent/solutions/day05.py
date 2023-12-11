@@ -43,9 +43,9 @@ def part1(input_file: str):
     print(f"Part 1: {min(locs)}")
 
 
-
-def foo(start, end, other_start, dest, other_end) -> tuple[list[tuple[int, int]], tuple[int, int] | None]:
-
+def foo(
+    start, end, other_start, dest, other_end
+) -> tuple[list[tuple[int, int]], tuple[int, int] | None]:
     def fix(l, r) -> tuple[int, int]:
         return l - other_start + dest, r - other_start + dest
 
@@ -69,7 +69,9 @@ def foo(start, end, other_start, dest, other_end) -> tuple[list[tuple[int, int]]
 
 def part2(input_file: str):
     seeds, mappings = _parse_file(input_file)
-    intervals = [(l_seed, l_seed + len_seed) for l_seed, len_seed in zip(seeds[::2], seeds[1::2])]
+    intervals = [
+        (l_seed, l_seed + len_seed) for l_seed, len_seed in zip(seeds[::2], seeds[1::2])
+    ]
     for mapping in mappings:
         new_intervals = []
 
@@ -78,7 +80,9 @@ def part2(input_file: str):
             for d_start, s_start, l in mapping:
                 new_next_intervals = []
                 for n_start, n_end in next_intervals:
-                    bar, mapped_interval = foo(n_start, n_end, s_start, d_start, s_start + l)
+                    bar, mapped_interval = foo(
+                        n_start, n_end, s_start, d_start, s_start + l
+                    )
                     new_next_intervals.extend(bar)
                     if mapped_interval:
                         new_intervals.append(mapped_interval)
