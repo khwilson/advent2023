@@ -13,6 +13,7 @@ black = "^23.11.0"
 isort = "^5.12.0"
 sympy = "^1.12"
 tqdm = "^4.66.1"
+numpy = "^1.26.2"
 
 [tool.poetry.scripts]
 advent = "advent.cli:cli"
