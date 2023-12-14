@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "advent2023"
 version = "0.1.0"
-description = ""
+description = "Kevin's 2023 Advent of Code solutions"
 authors = ["Kevin H Wilson <khwilson@gmail.com>"]
 packages = [{include = "advent", from = "src"}]
 readme = "README.md"
@@ -9,8 +9,6 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 click = "^8.1.7"
-black = "^23.11.0"
-isort = "^5.12.0"
 sympy = "^1.12"
 tqdm = "^4.66.1"
 numpy = "^1.26.2"
@@ -21,6 +19,8 @@ advent = "advent.cli:cli"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"
+black = "^23.11.0"
+isort = "^5.12.0"
 
 [build-system]
 requires = ["poetry-core"]
