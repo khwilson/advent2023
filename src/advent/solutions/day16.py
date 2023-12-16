@@ -1,3 +1,6 @@
+from tqdm.cli import tqdm
+
+
 def _parse_file(input_file: str) -> list[str]:
     with open(input_file, "rt") as inf:
         return [line.strip() for line in inf]
@@ -78,13 +81,18 @@ def part2(input_file: str):
     num_rows = len(data)
     num_cols = len(data[0])
     total = 0
-    for i in range(num_rows):
-        total = max(total, _run(data, i, 0, ">"))
-    for j in range(num_cols):
-        total = max(total, _run(data, 0, j, "v"))
-    for i in range(num_rows):
-        total = max(total, _run(data, i, num_cols - 1, "<"))
-    for j in range(num_cols):
-        total = max(total, _run(data, num_rows - 1, 0, "^"))
+    with tqdm(total=2 * num_cols + 2 * num_rows) as pbar:
+        for i in range(num_rows):
+            total = max(total, _run(data, i, 0, ">"))
+            pbar.update(1)
+        for j in range(num_cols):
+            total = max(total, _run(data, 0, j, "v"))
+            pbar.update(1)
+        for i in range(num_rows):
+            total = max(total, _run(data, i, num_cols - 1, "<"))
+            pbar.update(1)
+        for j in range(num_cols):
+            total = max(total, _run(data, num_rows - 1, 0, "^"))
+            pbar.update(1)
 
     print(f"Part 2: {total}")
